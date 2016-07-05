@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <title><%= title %></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" crossorigin="anonymous">
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+  </head>
+  <body ng-app="myApp" ng-controller="namesCtrl">
+    <div class="container-fluid">
+      <div id="main" class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+            <h1 class="thin">IBM <span class="bold">Bluemix Ambassador Program</span></h1>
+            <h2>Participation Tracker</h2>
+            <hr/>
+
+            <form action="/" method="POST" role="form">
+              <legend>Event Details</legend>
+
+              <div class="form-group">
+                <label for="">IBM Email</label>
+                <input type="text" class="form-control" id="" name="email" placeholder="Enter Your IBM Email Address" required>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Date</label>
+                    <input type="date" name="date" id="input" class="form-control" value="" required="required" title="" required>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Event Name</label>
+                    <select type="text" name='eventid' class="form-control" id="" required>
+                        <option value="{{name[17]}}" ng-repeat="name in events.Toronto.data">{{name[3]}}</option>
+                    </select>
+                    <input ng-model="search"/>
+                    <ul>
+                      <li ng-repeat="name in events.Toronto.data | filter:search">{{name[3]}}</li>
+                    </ul>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Attendance</label>
+                    <input type="number" name="numAttendees" class="form-control" id="">
+                    </input>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="">Crowd Engagement</label>
+                      <select type="text" name="engagement" class="form-control" id="">
+                        <option value="strong">Strong</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="low">Low</option>
+                        <option value="poor">Poor</option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="">Additional Comments (optional)</label>
+                <textarea name="comments" id="input" class="form-control" rows="3" required="required"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Scripts -->
+    <script src="js/scripts.js"></script>
+    <script>
+    angular.module('myApp', []).controller('namesCtrl', function($scope, $http) {
+
+        $http.get("/getEvents").then(function(res){
+          $scope.events = res.data;
+          console.log($scope.events);
+        });
+
+    });
+</script>
+  </body>
+</html>

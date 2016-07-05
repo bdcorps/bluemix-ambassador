@@ -1,0 +1,27 @@
+.thin {
+  font-weight: 100;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h1, h2 {
+  margin-bottom: 0px;
+}
+
+h2 {
+  margin-top: 5px;
+}
+
+#confirm {
+  margin-top: 30px;
+}
