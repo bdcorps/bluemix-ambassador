@@ -4,7 +4,7 @@ var cloudant = require('../config/db').connect(function(err) {
     if (err) {
         console.log('ERROR: Router Unable to connect to Cloudant.');
         return err;
-    } 
+    }
 });
 var xlsx = require('node-xlsx');
 /* GET home page. */
@@ -54,7 +54,7 @@ router.post('/', function(req, res, next) {
   ambassador.numResponses++;
   ambassadors.insert(ambassador);
 
-  res.render('index', { title: 'Bluemix Ambassador Program'})
+  res.render('confirmed', { title: 'Bluemix Ambassador Program', message: "INSERT DB POST SUCCESS/ERROR MESSAGE HERE..."})
 });
 
 module.exports = router;

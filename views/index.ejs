@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
     <title><%= title %></title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.css" crossorigin="anonymous">
+
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 
@@ -35,47 +37,54 @@
                     <label for="">Date</label>
                     <input type="date" name="date" id="input" class="form-control" value="" required="required" title="" required>
                   </div>
+                  <div class="form-group">
+                    <label for="">Attendance</label>
+                    <input placeholder="Enter # of attendees" type="number" name="numAttendees" class="form-control" id="">
+                    </input>
+                  </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <label for="">Event Name</label>
-                    <select type="text" name='eventid' class="form-control" id="" required>
-                        <option value="{{name[17]}}" ng-repeat="name in events.Toronto.data">{{name[3]}}</option>
+                    <label for="">City</label>
+                    <select ng-model="city" ng-change="updateCity()" id="input" class="form-control" required="required">
+                      <option value="Calgary">Calgary</option>
+                      <option value="Edmonton">Edmonton</option>
+                      <option value="Halifax">Halifax</option>
+                      <option value="Montreal">Montreal</option>
+                      <option value="Ottawa">Ottawa</option>
+                      <option selected="selected" value="Toronto">Toronto</option>
+                      <option value="Vancouver">Vancouver</option>
                     </select>
-                    <input ng-model="search"/>
-                    <ul>
-                      <li ng-repeat="name in events.Toronto.data | filter:search">{{name[3]}}</li>
-                    </ul>
+                    <label id="event-label">Event Name</label>
+                    <select name="eventid" type="text" class="form-control" required>
+                        <option value="{{name[3]}}" ng-repeat="name in eventData" ng-if="$index > 0">{{name[3]}}</option>
+                    </select>
 
                   </div>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div class="form-group">
-                    <label for="">Attendance</label>
-                    <input type="number" name="numAttendees" class="form-control" id="">
-                    </input>
-                  </div>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div class="form-group">
-                    <label for="">Crowd Engagement</label>
-                      <select type="text" name="engagement" class="form-control" id="">
-                        <option value="strong">Strong</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="low">Low</option>
-                        <option value="poor">Poor</option>
-                      </select>
-                  </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <label for="">Did you engage in a potential business lead or opportunity? </label>
+                  <select type="text" name="engagement" class="form-control" id="" required>
+                      <option value="yes">no</option>
+                      <option value="yes">yes</option>
+                  </select>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="">Additional Comments (optional)</label>
-                <textarea name="comments" id="input" class="form-control" rows="3" required="required"></textarea>
+              <div id="last-row" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                  <div class="form-group">
+                    <label for="">Additional Comments (optional)</label>
+                    <textarea name="comments" id="input" class="form-control" rows="3" required="required"></textarea>
+                  </div>
+
+                </div>
               </div>
+
 
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -91,8 +100,17 @@
     <script>
     angular.module('myApp', []).controller('namesCtrl', function($scope, $http) {
 
+        $scope.city = 'Toronto';
+        $scope.events;
+        $scope.eventData
+
+        $scope.updateCity = function(){
+          $scope.eventData = $scope.events[$scope.city].data;
+        };
+
         $http.get("/getEvents").then(function(res){
           $scope.events = res.data;
+          $scope.eventData = $scope.events[$scope.city].data;
           console.log($scope.events);
         });
 
