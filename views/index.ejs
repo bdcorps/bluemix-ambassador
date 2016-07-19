@@ -105,12 +105,12 @@
         $scope.eventData
 
         $scope.updateCity = function(){
-          $scope.eventData = $scope.events[$scope.city].data;
+          $scope.eventData = $scope.events[$scope.city];
         };
 
         $http.get("/getEvents").then(function(res){
           $scope.events = res.data;
-          $scope.eventData = $scope.events[$scope.city].data;
+          $scope.eventData = $scope.events[$scope.city];
           console.log($scope.events);
         });
 

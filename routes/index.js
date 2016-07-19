@@ -7,18 +7,43 @@ var cloudant = require('../config/db').connect(function(err) {
     }
 });
 var xlsx = require('node-xlsx');
+var fs = require('fs');
+var request = require('request');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Bluemix Ambassador Program' });
 });
 
 router.get('/getEvents', function(req, res, next) {
-  var workSheetsFromFile = xlsx.parse('./meetup.xlsx');
+  var date = new Date();
+  var update = false;
+  var options =  { 
+    method: 'GET',
+    url: 'https://ibm.box.com/shared/static/o7vlt0whjpe9ualh6q13dk9wu8m2lrzc.xlsx',
+    followAllRedirects: true
+  };
+
+  fs.stat('meetup.xlsx', function(err, stats) {
+    if (err) update = true;
+    if ((date - Date.parse(stats.mtime)) > 86400000)  update = true;// check if file is a day old, if file is old, update
+  });
+  if (update == true) 
+    request(options).pipe(fs.createWriteStream('meetup.xlsx')).on("close", function() {console.log(Date().toString() + ": events db updated")});
+  var meetups = xlsx.parse('meetup.xlsx');
+  // build the structure we send back, add new cities to cities array as we expand
   var cities = ["Toronto", "Vancouver", "Montreal", "Ottawa", "Calgary", "Edmonton", "Halifax"];
   var events = {};
-  for(var i = 0; i < cities.length; i++) {
-    events[cities[i]] = {};
-    for(var _obj in workSheetsFromFile[i]) events[cities[i]][_obj] = workSheetsFromFile[i][_obj];
+  cities.forEach(function(item) {
+    events[item] = [];
+  })
+  for(var i = date.getMonth(); i < meetups.length; i++) {
+    for(var _obj in meetups[i]["data"]) {
+      var city = meetups[i]["data"][_obj][5];
+      if (cities.indexOf(city) != -1){
+        console.log(city);
+        events[city].push(meetups[i]["data"][_obj]);
+      }
+    }
   }
   res.send(events);
 })
