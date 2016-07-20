@@ -15,6 +15,7 @@
     "serve-favicon": "~2.3.0",
     "cloudant": "*",
     "cfenv": "*",
-    "node-xlsx": "*"
+    "node-xlsx": "*",
+    "request": "*"
   }
 }
