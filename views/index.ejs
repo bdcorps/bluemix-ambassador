@@ -35,7 +35,7 @@
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
                     <label for="">Date</label>
-                    <input type="date" name="date" id="input" class="form-control" value="" required="required" title="" required>
+                    <input ng-model="date" type="date" name="date" id="input" class="form-control" value="" required="required" title="" required>
                   </div>
                   <div class="form-group">
                     <label for="">Attendance</label>
@@ -57,7 +57,7 @@
                     </select>
                     <label id="event-label">Event Name</label>
                     <select name="eventid" type="text" class="form-control" required>
-                        <option value="{{name[3]}}" ng-repeat="name in eventData" ng-if="$index > 0">{{name[3]}}</option>
+                        <option value="{{$index}}" ng-repeat="name in eventData" ng-if="$index > 0">{{name[3]}}</option>
                     </select>
 
                   </div>

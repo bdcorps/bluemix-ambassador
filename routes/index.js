@@ -16,7 +16,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/getEvents', function(req, res, next) {
   var date = new Date();
-  var update = false;
   var options =  { 
     method: 'GET',
     url: 'https://ibm.box.com/shared/static/o7vlt0whjpe9ualh6q13dk9wu8m2lrzc.xlsx',
@@ -24,31 +23,38 @@ router.get('/getEvents', function(req, res, next) {
   };
 
   fs.stat('meetup.xlsx', function(err, stats) {
-    if (err) update = true;
-    else {
-      if ((date - Date.parse(stats.mtime)) > 86400000)  update = true;// check if file is a day old, if file is old, update
+    if (err) {
+      request(options).pipe(fs.createWriteStream('meetup.xlsx')).on("close", function() {
+        console.log(Date().toString() + ": events db updated");
+        sendEvents();
+      });
     }
-    
+    else {
+      request(options).pipe(fs.createWriteStream('meetup.xlsx')).on("close", function() {
+        console.log(Date().toString() + ": events db updated");
+        sendEvents();
+      });// check if file is a day old, if file is old, update
+    }
   });
-  if (update == true) 
-    request(options).pipe(fs.createWriteStream('meetup.xlsx')).on("close", function() {console.log(Date().toString() + ": events db updated")});
-  var meetups = xlsx.parse('meetup.xlsx');
-  // build the structure we send back, add new cities to cities array as we expand
-  var cities = ["Toronto", "Vancouver", "Montreal", "Ottawa", "Calgary", "Edmonton", "Halifax"];
-  var events = {};
-  cities.forEach(function(item) {
-    events[item] = [];
-  })
-  for(var i = date.getMonth(); i < meetups.length; i++) {
-    for(var _obj in meetups[i]["data"]) {
-      var city = meetups[i]["data"][_obj][5];
-      if (cities.indexOf(city) != -1){
-        console.log(city);
-        events[city].push(meetups[i]["data"][_obj]);
+  var sendEvents = function () {
+    var meetups = xlsx.parse('meetup.xlsx');
+    // build the structure we send back, add new cities to cities array as we expand
+    var cities = ["Toronto", "Vancouver", "Montreal", "Ottawa", "Calgary", "Edmonton", "Halifax"];
+    var events = {};
+    cities.forEach(function(item) {
+      events[item] = [];
+    })
+    for(var i = date.getMonth(); i < meetups.length; i++) {
+      for(var _obj in meetups[i]["data"]) {
+        var city = meetups[i]["data"][_obj][5];
+        if (cities.indexOf(city) != -1){
+          console.log(city);
+          events[city].push(meetups[i]["data"][_obj]);
+        }
       }
     }
-  }
-  res.send(events);
+    res.send(events);
+  } 
 })
 router.post('/', function(req, res, next) {
   // check if ambassador already made response for this event, if so, update responses
