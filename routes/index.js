@@ -25,7 +25,10 @@ router.get('/getEvents', function(req, res, next) {
 
   fs.stat('meetup.xlsx', function(err, stats) {
     if (err) update = true;
-    if ((date - Date.parse(stats.mtime)) > 86400000)  update = true;// check if file is a day old, if file is old, update
+    else {
+      if ((date - Date.parse(stats.mtime)) > 86400000)  update = true;// check if file is a day old, if file is old, update
+    }
+    
   });
   if (update == true) 
     request(options).pipe(fs.createWriteStream('meetup.xlsx')).on("close", function() {console.log(Date().toString() + ": events db updated")});
