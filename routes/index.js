@@ -88,7 +88,7 @@ router.post('/', function(req, res, next) {
   ambassador.numResponses++;
   ambassadors.insert(ambassador);
 
-  res.render('confirmed', { title: 'Bluemix Ambassador Program', message: "INSERT DB POST SUCCESS/ERROR MESSAGE HERE..."})
+  res.render('index', { title: 'Bluemix Ambassador Program', message: "We've successfully saved your submission, thanks!"})
 });
 
 module.exports = router;
