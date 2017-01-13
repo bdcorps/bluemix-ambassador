@@ -3,8 +3,8 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: ambassador
-  host: ambassador
+  name: bluemix-ambassador
+  host: bluemix-ambassador
   disk_quota: 1024M
   services:
-  - ambassadorCloudant
+  - Cloudant NoSQL DB-vu
