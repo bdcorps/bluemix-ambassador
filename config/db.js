@@ -15,8 +15,8 @@ if (process.env.hasOwnProperty("VCAP_SERVICES")) {
 }
 
 
-var user = '0156ba37-b7b9-4d56-a150-f84e0386479a-bluemix'
-  , password = 'b311e4092a9500b8d961617223d3b236f49b6f36c198dbd2ae7922b8fa17dbb3'
+var user = '201e5aa1-05cb-4a9e-9237-5ac1d8263f62-bluemix',
+	password = '7a0bf1cbed0e24191743cfc1e8af1c3bc112a5f99485f1580de4e5937ff646ff'
 
 exports.connect = function(cb) {
     if (cloudant) {
