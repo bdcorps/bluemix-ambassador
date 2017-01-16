@@ -11,7 +11,7 @@ var fs = require('fs');
 var request = require('request');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Bluemix Ambassador Program' });
+  res.render('index', { title: 'Bluemix Ambassador Program Testing' });
 });
 
 router.get('/getEvents', function(req, res, next) {
