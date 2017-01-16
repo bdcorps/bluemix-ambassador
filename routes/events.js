@@ -9,7 +9,7 @@ var cloudant = require('../config/db').connect(function(err) {
 var xlsx = require('node-xlsx');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('index', {title: "Bluemix Ambassador Program Testing"});
+  res.render('index', {title: "Bluemix Ambassador Program"});
 });
 
 router.get('/:id', function(req, res, next) {
